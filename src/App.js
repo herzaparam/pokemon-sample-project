@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { hot } from 'react-hot-loader';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+/** @jsx jsx */
+import { jsx } from '@emotion/react';
+
+const btn = {
+    color: 'green',
+    fontSize: '53px',
+    borderRadius: '12px',
+}
+const btnActive = {
+    fontSize: '24px',
+    backgroundColor: 'black',
 }
 
-export default App;
+class App extends Component {
+  state = {
+    counter: 0,
+  };
+
+  handleClick = () => {
+    this.setState((prevState) => {
+      return { counter: prevState.counter + 1 };
+    });
+  };
+  render() {
+    return (
+      <div
+        className="App"
+        css={{
+          backgroundColor: 'hotpink',
+          '&:hover': {
+            color: 'lightgreen',
+          },
+        }}
+      >
+        <h1>I'm configuring setting up Webpack!!!</h1>
+        <p>{`The count now is: ${this.state.counter}`}</p>
+        <button onClick={this.handleClick} css={btn}>Click me</button>
+      </div>
+    );
+  }
+}
+export default hot(module)(App);
