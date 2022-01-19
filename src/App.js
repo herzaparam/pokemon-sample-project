@@ -1,45 +1,22 @@
 import React, { Component } from 'react';
-import { hot } from 'react-hot-loader';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Details from './pages/Details';
+import List from './pages/List';
+import ErrorPage from './pages/ErrorPage';
+import Navbar from './components/Navbar';
 
-/** @jsx jsx */
-import { jsx } from '@emotion/react';
-
-const btn = {
-    color: 'green',
-    fontSize: '53px',
-    borderRadius: '12px',
+function App() {
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/details" element={<Details />} />
+        <Route path="/list" element={<List />} />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
-const btnActive = {
-    fontSize: '24px',
-    backgroundColor: 'black',
-}
-
-class App extends Component {
-  state = {
-    counter: 0,
-  };
-
-  handleClick = () => {
-    this.setState((prevState) => {
-      return { counter: prevState.counter + 1 };
-    });
-  };
-  render() {
-    return (
-      <div
-        className="App"
-        css={{
-          backgroundColor: 'hotpink',
-          '&:hover': {
-            color: 'lightgreen',
-          },
-        }}
-      >
-        <h1>I'm configuring setting up Webpack!!!</h1>
-        <p>{`The count now is: ${this.state.counter}`}</p>
-        <button onClick={this.handleClick} css={btn}>Click me</button>
-      </div>
-    );
-  }
-}
-export default hot(module)(App);
+export default App;
