@@ -1,23 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PokemonTag from '../../assets/pokemon-tag.png';
-import Button from '../Button'
+import ToggleButton from '../ToggleButton'
 
 import { theme } from '../../helper/theme';
 
 const container = {
   navbar: {
     display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '10px 20px',
-    backgroundColor: theme.color.halfLightBlue,
+    backgroundColor: theme.color.darkBlue,
   }
 };
 const styledImg = {
   logo: {
-    width: '180px',
+    width: '150px',
     objectFit: 'contain',
   },
   icon: {
@@ -38,7 +37,7 @@ function Navbar() {
   return (
     <nav css={container.navbar}>
       <img src={PokemonTag} alt="pokeball" css={styledImg.logo} />
-      <Button />
+      <ToggleButton />
     </nav>
   );
 }

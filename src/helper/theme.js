@@ -6,5 +6,6 @@ export const theme = {
         halfDarkBlue: 'hsla(219, 81%, 21%, 0.8)',
         lightBlue: '#0075BE',
         halfLightBlue: 'hsla(203, 100%, 37%, 0.8)',
+        flowerBlue: '#3daae7'
     }
 }

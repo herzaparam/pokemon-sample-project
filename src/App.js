@@ -5,6 +5,7 @@ import Details from './pages/Details';
 import List from './pages/List';
 import ErrorPage from './pages/ErrorPage';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/list" element={<List />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

@@ -12,7 +12,7 @@ const styledImg = {
   icon: {
     height: '24px',
     objectFit: 'contain',
-    marginLeft: '5px',
+    marginRight: '5px',
   },
 };
 const styledBtn = {
@@ -22,29 +22,30 @@ const styledBtn = {
     alignItems: 'center',
     border: 'none',
     padding: '5px 10px',
-  },
-  btnNav: {
-    width: '100%',
-    margin: '15px 5px',
+    textAlign: 'center',
     backgroundColor: theme.color.lightBlue,
-    border: '3px solid white',
+    '&:hover': {
+      backgroundColor: theme.color.yellow,
+    }
   },
   linkBtn: {
     textDecoration: 'none',
     color: theme.color.yellow,
     fontSize: '1.5rem',
     fontWeight: '700',
-    textAlign: 'center',
+    '&:hover': {
+      color: theme.color.lightBlue,
+    }
   },
 };
 
 function Button() {
   return (
-    <button css={[styledBtn.btn, styledBtn.btnNav]}>
-      <Link to="/list" css={styledBtn.linkBtn}>
-        My Pokemon
-      </Link>
+    <button css={styledBtn.btn}>
       <img src={PokeBall} alt="pokeball icon" css={styledImg.icon} />
+      <Link to="/list" css={styledBtn.linkBtn}>
+        Click Here!
+      </Link>
     </button>
   );
 }
