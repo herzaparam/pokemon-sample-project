@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import pikachu from '../assets/pikachu.png';
 import ash from '../assets/Hoennash.png';
 import Button from '../components/Button';
 import { theme } from '../helper/theme';
 import Card from '../components/Card';
+import { Link } from 'react-router-dom';
+import { pokemonContext } from '../helper/context';
 
 const styleCont = {
   container: {
@@ -12,7 +14,6 @@ const styleCont = {
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
     padding: '2em',
-    minHeight: '36vh',
   },
   cardCont: {
     display: 'flex',
@@ -25,7 +26,7 @@ const styleCont = {
   cardSect: {
     display: 'grid',
     gridTemplateColumns: 'auto auto',
-    gridRowGap: '10px',
+    gridRowGap: '25px',
     zIndex: '1',
   },
   content: {
@@ -59,47 +60,76 @@ const styleText = {
     color: theme.color.darkBlue,
     textAlign: 'center',
   },
-  paragraph: {
-    fontSize: '1rem',
-    fontWeight: '400',
-    lineHeight: '1.2rem',
-    textAlign: 'justify',
-    margin: '15px 0',
-  },
-};
-const style = {
-  input: {
-    margin: '15px 0',
-    width: '75%',
-    alignSelf: 'center',
-  },
 };
 
 function Home() {
+  const [list, setList] = useState([]);
+  const [offsetVal, setOffsetVal] = useState(0);
+  const { pokemon, setPokemon } = useContext(pokemonContext);
+  console.log(pokemon);
+
+  const fetchList = () => {
+    const gqlQuery = `query pokemons($limit: Int, $offset: Int) {
+        pokemons(limit: $limit, offset: $offset) {
+          count
+          nextOffset
+          previous
+          status
+          message
+          results {
+            id
+            name
+            image
+          }
+        }
+      }`;
+
+    const gqlVariables = {
+      limit: 6,
+      offset: offsetVal,
+    };
+    fetch('https://graphql-pokeapi.graphcdn.app/', {
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: gqlQuery,
+        variables: gqlVariables,
+      }),
+      method: 'POST',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const newpokemonList = list.concat(res.data.pokemons.results);
+        const newoffsetVal = res.data.pokemons.nextOffset;
+        setOffsetVal(newoffsetVal);
+        setList(newpokemonList);
+      });
+  };
+
+  useEffect(() => {
+    fetchList();
+  }, []);
+
   return (
     <>
       <div css={styleCont.cardCont}>
         <h3 css={styleText.title}>Featured Pokemon</h3>
-        <input type="text" css={style.input} placeholder='Search Here'/>
         <div css={styleCont.cardSect} id="list">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+          {list.map((item) => {
+            return (
+              <Card
+                img={item.image}
+                name={item.name}
+                key={item.id}
+                id={item.id}
+              />
+            );
+          })}
         </div>
       </div>
       <div css={styleCont.container}>
-        {/* <img src={pikachu} alt="" css={styleImg.pikachu} /> */}
-        <div css={styleCont.content}>
-          <h2 css={styleText.title}>My Pokemon</h2>
-          <p css={styleText.paragraph}>
-            Catching Pokémon is one way to collect them! You can also collect
-            and see them!
-          </p>
-          <Button />
-        </div>
+        <Button link={false} title="Load More" onClick={fetchList} />
+        {offsetVal > 6 && <Button link={false} title="go to top" />}
       </div>
     </>
   );

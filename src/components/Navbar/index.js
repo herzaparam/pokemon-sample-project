@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PokemonTag from '../../assets/pokemon-tag.png';
 import ToggleButton from '../ToggleButton'
+import Button from '../Button'
 
 import { theme } from '../../helper/theme';
 
@@ -37,7 +38,7 @@ function Navbar() {
   return (
     <nav css={container.navbar}>
       <img src={PokemonTag} alt="pokeball" css={styledImg.logo} />
-      <ToggleButton />
+      <Button link={true} title="My Pokemon"/>
     </nav>
   );
 }

@@ -40,7 +40,9 @@ module.exports = ({ mode } = { mode: 'production' }) => {
     devServer: {
       historyApiFallback: true,
       open: true,
+      hot: true,
     },
+    devtool: 'source-map',
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
