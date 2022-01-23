@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { pokemonContext } from '../helper/context';
+import { theme } from '../helper/theme';
+import StatsIndicator from '../components/StatsIndicator/StatsIndicator';
+import PokeballIcon from '../components/SVG/PokeballIcon';
 
 const style = {
   container: {
@@ -9,14 +12,82 @@ const style = {
     display: 'flex',
     flexDirection: 'column',
   },
+  contTop: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    flexDirection: 'column',
+  },
+  groupType: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    padding: '1em 1.3em',
+  },
+  catchGroup: {
+    position: 'fixed',
+    bottom: '20px',
+    left: '50%',
+    marginLeft: '-75px',
+    padding: '10px',
+    borderRadius: '16px',
+    '&:hover': {
+      backgroundColor: 'hsl(208,9%,66%,0.7)',
+    },
+    '& h3': {
+      fontSize: '32px',
+      fontWeight: '800',
+      color: theme.color.yellow,
+      textAlign: 'center',
+    },
+  },
+  typeCont: {
+    backgroundColor: theme.color.flowerBlue,
+    margin: 'auto',
+    padding: '5px 1em',
+    borderRadius: '16px',
+    boxShadow: '0px 0px 5px 5px rgba(161,170,178,0.5)',
+    '& p': {
+      fontSize: '20px',
+      fontWeight: '900',
+      color: theme.color.yellow,
+    },
+  },
+  moveCont: {
+    backgroundColor: 'white',
+    margin: '8px',
+    padding: '5px 1em',
+    borderRadius: '16px',
+    boxShadow: '0px 0px 5px 5px rgba(161,170,178,0.5)',
+    '& p': {
+      color: theme.color.darkBlue,
+    },
+  },
+  title: {
+    fontSize: '2.5rem',
+    fontWeight: '800',
+    letterSpacing: '.7px',
+    color: theme.color.darkBlue,
+    textAlign: 'center',
+  },
+  image: {
+    width: '10em',
+  },
+  icon: {
+    height: '150px',
+    fill: '#ED5564',
+  },
 };
 
 function Details() {
   let param = useParams();
+  let location = useLocation();
   //   const [pokemon, setPokemon] = useState({});
   //   console.log(pokemon)
+  const [hovered, setHovered] = useState(false);
   const { pokemon, setPokemon } = useContext(pokemonContext);
-  console.log(pokemon);
+  // console.log(hovered);
+  // console.log(location);
 
   const fetchDetail = () => {
     // get pokemon name from parameter
@@ -49,7 +120,6 @@ function Details() {
               name
             }
           }
-    			location_area_encounters
     			status
     			message
         }
@@ -77,11 +147,75 @@ function Details() {
   }, []);
   return (
     <div css={style.container}>
-      <div>
-        <img src={pokemon.image} alt="" css={{ width: '5em' }} />
-        <h2>{pokemon.name}</h2>
+      <Link to={`${location.pathname}/catch`}>
+        <div
+          css={style.catchGroup}
+          onMouseEnter={() => setHovered(!hovered)}
+          onMouseLeave={() => setHovered(!hovered)}
+        >
+          {hovered && <h3>Catch!</h3>}
+          <PokeballIcon hovered={hovered} width="150px" height="150px" />
+        </div>
+      </Link>
+      <div css={style.contTop}>
+        <img
+          src={pokemon.image}
+          alt=""
+          css={{ width: '75%', margin: 'auto' }}
+        />
+        <h2 css={style.title}>{pokemon.name?.toUpperCase()}</h2>
+        <h2
+          css={[
+            style.title,
+            { fontSize: '2rem', textAlign: 'left', margin: '.5em 0 0 1em' },
+          ]}
+        >
+          Types
+        </h2>
+        <div css={style.groupType}>
+          {pokemon?.types?.map((item, index) => {
+            return (
+              <div css={style.typeCont} key={index}>
+                <p>{item.type.name}</p>
+              </div>
+            );
+          })}
+        </div>
+        <h2
+          css={[
+            style.title,
+            { fontSize: '2rem', textAlign: 'left', margin: '.5em 0 0 1em' },
+          ]}
+        >
+          Stats
+        </h2>
+        {pokemon?.stats?.map((item, index) => {
+          return (
+            <StatsIndicator
+              statsName={item.stat.name}
+              baseStats={item.base_stat}
+              key={index}
+            />
+          );
+        })}
       </div>
-      <div></div>
+      <h2
+        css={[
+          style.title,
+          { fontSize: '2rem', textAlign: 'left', margin: '.5em 0 0 1em' },
+        ]}
+      >
+        Moves
+      </h2>
+      <div css={style.groupType}>
+        {pokemon?.moves?.map((item, index) => {
+          return (
+            <div css={style.moveCont} key={index}>
+              <p>{item.move.name}</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

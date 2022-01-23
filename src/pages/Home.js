@@ -66,7 +66,7 @@ function Home() {
   const [list, setList] = useState([]);
   const [offsetVal, setOffsetVal] = useState(0);
   const { pokemon, setPokemon } = useContext(pokemonContext);
-  console.log(pokemon);
+  // console.log(pokemon);
 
   const fetchList = () => {
     const gqlQuery = `query pokemons($limit: Int, $offset: Int) {
