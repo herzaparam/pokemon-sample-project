@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { keyframes } from '@emotion/react';
 import { theme } from '../helper/theme';
 import FailedIcon from '../assets/failed icon.svg';
 import SuccessIcon from '../assets/success icon.svg';
+import { Link } from 'react-router-dom';
+import iconLeft from '../assets/icon-left.svg';
+import { pokemonContext } from '../helper/context';
 
 const animation = keyframes({
   'from, 0%, to': {
@@ -29,6 +32,7 @@ const style = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: '2em',
     '& h3': {
       fontSize: '2rem',
       fontWeight: '900',
@@ -56,6 +60,10 @@ const style = {
   topContainer: {
     width: '240px',
     minHeight: '240px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   paragraph: {
     fontSize: '18px',
@@ -67,18 +75,30 @@ const style = {
     width: '100%',
     height: '100%',
   },
+  backButton: {
+    padding: '7px 10px 0',
+    backgroundColor: theme.color.yellow,
+    borderRadius: '14px',
+    border: 'none',
+    margin: '7px 0',
+    '&:hover': {
+      boxShadow: '0px 0px 5px 5px rgba(161,170,178,0.5)',
+    },
+  },
 };
 
 function CatchPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  //   console.log(success);
+  const { pokemon, setPokemon, owned, setOwned } = useContext(pokemonContext);
+  console.log(owned);
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
       let catchPokemon;
       if (Math.random() >= 0.5) {
+        setOwned([...owned, pokemon]);
         catchPokemon = true;
       } else {
         catchPokemon = false;
@@ -118,6 +138,11 @@ function CatchPage() {
               </p>
             </>
           )}
+          <button css={style.backButton}>
+            <Link to="/">
+              <img src={iconLeft} alt="" height={40} />
+            </Link>
+          </button>
         </div>
       )}
     </div>
