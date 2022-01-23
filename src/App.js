@@ -10,11 +10,12 @@ import Footer from './components/Footer';
 import { pokemonContext } from './helper/context';
 
 function App() {
+  const [list, setList] = useState([]);
   const [pokemon, setPokemon] = useState({});
-  const [owned, setOwned] = useState([]);
+  // const [owned, setOwned] = useState([]);
 
   return (
-    <pokemonContext.Provider value={{ pokemon, setPokemon, owned, setOwned }}>
+    <pokemonContext.Provider value={{ pokemon, setPokemon, list, setList }}>
       <BrowserRouter>
         <Navbar />
         <Routes>

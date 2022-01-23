@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { theme } from '../../helper/theme';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { pokemonContext } from '../../helper/context';
 
 const style = {
@@ -54,18 +54,22 @@ const style = {
   },
 };
 
-function Card({ img, name, id, onClick }) {
+function Card({ img, name, id, onClick, owned }) {
   const { pokemon, setPokemon } = useContext(pokemonContext);
+  // console.log(pokemon);
   return (
     <div css={style.cont} onClick={() => setPokemon({ name, image: img })}>
-      <Link to={`/pokemon-details/${name}`} css={style.paragraph}>
+      <Link
+        to={`/pokemon-details/${name}?index=${id - 1}`}
+        css={style.paragraph}
+      >
         <div css={style.contTop}>
           <img src={img} alt="" css={style.image} />
         </div>
         <div css={style.contDown}>
           <h4>{name?.toUpperCase()}</h4>
           <div css={style.tag}>
-            <p>Owned: 10</p>
+            <p>Owned: {owned}</p>
           </div>
         </div>
       </Link>
@@ -77,6 +81,7 @@ Card.propTypes = {
   img: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   id: PropTypes.number,
+  owned: PropTypes.number,
 };
 
 export default Card;

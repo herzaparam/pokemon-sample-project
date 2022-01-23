@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+} from 'react-router-dom';
 import { pokemonContext } from '../helper/context';
 import { theme } from '../helper/theme';
 import StatsIndicator from '../components/StatsIndicator/StatsIndicator';
@@ -80,18 +83,19 @@ const style = {
 };
 
 function Details() {
-  let param = useParams();
   let location = useLocation();
-  //   const [pokemon, setPokemon] = useState({});
-  //   console.log(pokemon)
+  // console.log(location);
+
+  const index = location?.search?.split('=')[1];
+  // get pokemon name from parameter
+  const pokemonName = location?.pathname.split('/')[2];
+
   const [hovered, setHovered] = useState(false);
-  const { pokemon, setPokemon } = useContext(pokemonContext);
-  // console.log(hovered);
+  const { pokemon, setPokemon, list, setList } = useContext(pokemonContext);
+  // console.log(list);
   // console.log(location);
 
   const fetchDetail = () => {
-    // get pokemon name from parameter
-    const paramName = param.name;
 
     const gqlQuery = `query pokemon($name: String!) {
         pokemon(name: $name) {
@@ -126,7 +130,7 @@ function Details() {
       }`;
 
     const gqlVariables = {
-      name: paramName,
+      name: pokemonName,
     };
     fetch('https://graphql-pokeapi.graphcdn.app/', {
       credentials: 'omit',
@@ -139,15 +143,19 @@ function Details() {
     })
       .then((res) => res.json())
       .then((res) => {
-        setPokemon({ ...pokemon, ...res.data.pokemon });
+        list[`${index}`].abilities = res.data.pokemon.abilities;
+        list[`${index}`].moves = res.data.pokemon.moves;
+        list[`${index}`].stats = res.data.pokemon.stats;
+        list[`${index}`].types = res.data.pokemon.types;
       });
   };
   useEffect(() => {
     fetchDetail();
   }, []);
+
   return (
     <div css={style.container}>
-      <Link to={`${location.pathname}/catch`}>
+      <Link to={`${location.pathname}/catch?index=${index}`}>
         <div
           css={style.catchGroup}
           onMouseEnter={() => setHovered(!hovered)}
@@ -159,11 +167,11 @@ function Details() {
       </Link>
       <div css={style.contTop}>
         <img
-          src={pokemon.image}
+          src={list[`${index}`].image}
           alt=""
           css={{ width: '75%', margin: 'auto' }}
         />
-        <h2 css={style.title}>{pokemon.name?.toUpperCase()}</h2>
+        <h2 css={style.title}>{list[`${index}`].name?.toUpperCase()}</h2>
         <h2
           css={[
             style.title,
@@ -173,7 +181,7 @@ function Details() {
           Types
         </h2>
         <div css={style.groupType}>
-          {pokemon?.types?.map((item, index) => {
+          {list[`${index}`]?.types?.map((item, index) => {
             return (
               <div css={style.typeCont} key={index}>
                 <p>{item.type.name}</p>
@@ -189,7 +197,7 @@ function Details() {
         >
           Stats
         </h2>
-        {pokemon?.stats?.map((item, index) => {
+        {list[`${index}`]?.stats?.map((item, index) => {
           return (
             <StatsIndicator
               statsName={item.stat.name}
@@ -208,7 +216,7 @@ function Details() {
         Moves
       </h2>
       <div css={style.groupType}>
-        {pokemon?.moves?.map((item, index) => {
+        {list[`${index}`]?.moves?.map((item, index) => {
           return (
             <div css={style.moveCont} key={index}>
               <p>{item.move.name}</p>

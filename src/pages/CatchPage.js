@@ -3,7 +3,7 @@ import { keyframes } from '@emotion/react';
 import { theme } from '../helper/theme';
 import FailedIcon from '../assets/failed icon.svg';
 import SuccessIcon from '../assets/success icon.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import iconLeft from '../assets/icon-left.svg';
 import { pokemonContext } from '../helper/context';
 
@@ -88,17 +88,23 @@ const style = {
 };
 
 function CatchPage() {
+  const location = useLocation();
+  const index = location?.search?.split('=')[1];
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const { pokemon, setPokemon, owned, setOwned } = useContext(pokemonContext);
-  console.log(owned);
+  const { pokemon, setPokemon, list, setList } = useContext(pokemonContext);
+  console.log(list[`${index}`].owned);
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
       let catchPokemon;
       if (Math.random() >= 0.5) {
-        setOwned([...owned, pokemon]);
+        
+        // setList([...list, {}]);
+        list[`${index}`].owned = ++list[`${index}`].owned;
+        console.log(list);
         catchPokemon = true;
       } else {
         catchPokemon = false;

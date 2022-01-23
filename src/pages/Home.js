@@ -63,9 +63,8 @@ const styleText = {
 };
 
 function Home() {
-  const [list, setList] = useState([]);
-  const [offsetVal, setOffsetVal] = useState(0);
-  const { pokemon, setPokemon } = useContext(pokemonContext);
+  const { pokemon, setPokemon, list, setList } = useContext(pokemonContext);
+  console.log(list);
   // console.log(pokemon);
 
   const fetchList = () => {
@@ -86,7 +85,7 @@ function Home() {
 
     const gqlVariables = {
       limit: 6,
-      offset: offsetVal,
+      offset: list.length,
     };
     fetch('https://graphql-pokeapi.graphcdn.app/', {
       credentials: 'omit',
@@ -99,15 +98,16 @@ function Home() {
     })
       .then((res) => res.json())
       .then((res) => {
-        const newpokemonList = list.concat(res.data.pokemons.results);
-        const newoffsetVal = res.data.pokemons.nextOffset;
-        setOffsetVal(newoffsetVal);
-        setList(newpokemonList);
+        const pokemonList = [...list, ...res.data.pokemons.results];
+        const newPokemonList = pokemonList.map((e) => ({ ...e, owned: 0 }));
+        setList(newPokemonList);
       });
   };
 
   useEffect(() => {
-    fetchList();
+    if (list.length === 0) {
+      fetchList();
+    }
   }, []);
 
   return (
@@ -122,6 +122,7 @@ function Home() {
                 name={item.name}
                 key={item.id}
                 id={item.id}
+                owned={item.owned}
               />
             );
           })}
@@ -129,7 +130,7 @@ function Home() {
       </div>
       <div css={styleCont.container}>
         <Button link={false} title="Load More" onClick={fetchList} />
-        {offsetVal > 6 && <Button link={false} title="go to top" />}
+        {list.length > 6 && <Button link={false} title="go to top" />}
       </div>
     </>
   );

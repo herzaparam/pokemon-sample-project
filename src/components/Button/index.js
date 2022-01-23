@@ -45,7 +45,7 @@ function Button({ title, onClick, link }) {
   return link ? (
     <button css={styledBtn.btn} onClick={onClick}>
       <img src={PokeBall} alt="pokeball icon" css={styledImg.icon} />
-      <Link to="/list" css={styledBtn.linkBtn}>
+      <Link to="/my-pokemon-list" css={styledBtn.linkBtn}>
         {title}
       </Link>
     </button>
