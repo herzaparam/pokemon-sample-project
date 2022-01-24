@@ -1,5 +1,4 @@
 import React from 'react';
-import githublogo from '../../assets/github-logo.png';
 import { theme } from '../../helper/theme';
 
 const style = {
@@ -26,7 +25,7 @@ const style = {
 function Footer() {
   return (
     <footer css={style.cont}>
-      <img src={githublogo} alt="" css={style.logo} />
+      {/* <img src={githublogo} alt="" css={style.logo} /> */}
       <h4 css={style.text}>herzaparam</h4>
     </footer>
   );
