@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import {
-  Link,
-  useLocation,
-} from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { pokemonContext } from '../helper/context';
 import { theme } from '../helper/theme';
 import StatsIndicator from '../components/StatsIndicator/StatsIndicator';
@@ -14,24 +11,41 @@ const style = {
     backgroundColor: 'whitesmoke',
     display: 'flex',
     flexDirection: 'column',
+    '@media(min-width: 1024px)': {
+      flexDirection: 'row',
+    },
   },
   contTop: {
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
     flexDirection: 'column',
+    '@media(min-width: 1440px)': {
+      width: '35%',
+    },
   },
   groupType: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
     padding: '1em 1.3em',
+    '@media(min-width: 1440px)': {
+      width: '75%',
+    },
+  },
+  moveType: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    padding: '1em 1.3em',
+    '@media(min-width: 1440px)': {
+      width: '75%',
+    },
   },
   catchGroup: {
     position: 'fixed',
     bottom: '20px',
     left: '50%',
-    marginLeft: '-75px',
+    marginLeft: '-50px',
     padding: '10px',
     borderRadius: '16px',
     '&:hover': {
@@ -54,6 +68,9 @@ const style = {
       fontSize: '20px',
       fontWeight: '900',
       color: theme.color.yellow,
+    },
+    '@media (min-width: 1024px)': {
+      margin: '8px auto',
     },
   },
   moveCont: {
@@ -93,7 +110,6 @@ function Details() {
   const { pokemon, setPokemon, list, setList } = useContext(pokemonContext);
 
   const fetchDetail = () => {
-
     const gqlQuery = `query pokemon($name: String!) {
         pokemon(name: $name) {
     		id
@@ -159,14 +175,24 @@ function Details() {
           onMouseLeave={() => setHovered(!hovered)}
         >
           {hovered && <h3>Catch!</h3>}
-          <PokeballIcon hovered={hovered} width="150px" height="150px" />
+          <PokeballIcon hovered={hovered} width="100px" height="100px" />
         </div>
       </Link>
       <div css={style.contTop}>
         <img
           src={list[`${index}`].image}
           alt=""
-          css={{ width: '75%', margin: 'auto' }}
+          css={{
+            width: '75%',
+            margin: 'auto',
+            '@media(min-width: 768px)': {
+              width: '40%',
+            },
+            '@media(min-width: 1024px)': {
+              width: '100%',
+              margin: 0,
+            },
+          }}
         />
         <h2 css={style.title}>{list[`${index}`].name?.toUpperCase()}</h2>
         <h2
@@ -204,22 +230,31 @@ function Details() {
           );
         })}
       </div>
-      <h2
-        css={[
-          style.title,
-          { fontSize: '2rem', textAlign: 'left', margin: '.5em 0 0 1em' },
-        ]}
-      >
-        Moves
-      </h2>
-      <div css={style.groupType}>
-        {list[`${index}`]?.moves?.map((item, index) => {
-          return (
-            <div css={style.moveCont} key={index}>
-              <p>{item.move.name}</p>
-            </div>
-          );
-        })}
+      <div css={style.moveType}>
+        <h2
+          css={[
+            style.title,
+            { fontSize: '2rem', textAlign: 'left', margin: '.5em 0 0 1em' },
+          ]}
+        >
+          Moves
+        </h2>
+        <div
+          css={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {list[`${index}`]?.moves?.map((item, index) => {
+            return (
+              <div css={style.moveCont} key={index}>
+                <p>{item.move.name}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

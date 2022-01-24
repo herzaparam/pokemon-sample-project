@@ -28,6 +28,12 @@ const styleCont = {
     gridTemplateColumns: 'auto auto',
     gridRowGap: '25px',
     zIndex: '1',
+    '@media(min-width: 1024px)': {
+      gridTemplateColumns: 'auto auto auto',
+    },
+    '@media(min-width: 1440px)': {
+      gridTemplateColumns: 'auto auto auto',
+    },
   },
   content: {
     display: 'flex',
@@ -133,7 +139,15 @@ function Home() {
       </div>
       <div css={styleCont.container}>
         <Button link={false} title="Load More" onClick={fetchList} />
-        {list.length > 6 && <Button link={false} title="go to top" />}
+        {list.length > 6 && (
+          <Button
+            link={false}
+            title="go to top"
+            onClick={() => {
+              window.scrollTo(0, 0);
+            }}
+          />
+        )}
       </div>
     </>
   );

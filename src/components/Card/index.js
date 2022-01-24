@@ -14,6 +14,10 @@ const style = {
     boxShadow: '0px 0px 5px 5px rgba(161,170,178,0.5)',
     // -webkit-box-shadow: 3px 2px 18px 9px rgba(61,170,231,0.5),
     // -moz-box-shadow: 3px 2px 18px 9px rgba(61,170,231,0.5),
+    '@media(min-width: 1024px)': {
+      height: '250px',
+      width: '175px',
+    },
   },
   contTop: {
     height: '60%',
@@ -31,6 +35,7 @@ const style = {
   },
   image: {
     width: '100%',
+    height: '100%',
     objectFit: 'contain',
   },
   tag: {
@@ -56,10 +61,6 @@ const style = {
 
 function Card({ img, name, id, onClick, owned }) {
   const { pokemon, setPokemon } = useContext(pokemonContext);
-  // const location = useLocation();
-  // const pathname = location.split('/').at(-1);
-  // console.log(pathname);
-  // console.log(pokemon);
   return (
     <div css={style.cont} onClick={() => setPokemon({ name, image: img })}>
       <Link

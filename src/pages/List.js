@@ -19,13 +19,20 @@ const style = {
     gridTemplateColumns: 'auto auto',
     gridRowGap: '25px',
     zIndex: '1',
+    '@media(min-width: 1024px)': {
+      gridTemplateColumns: 'auto auto auto',
+    },
   },
   cont: {
-    minHeight: '200px',
-    width: '175px',
+    minHeight: '170px',
+    width: '145px',
     margin: 'auto',
     borderRadius: '12px',
     boxShadow: '0px 0px 5px 5px rgba(161,170,178,0.5)',
+    '@media(min-width: 768px)': {
+      minHeight: '200px',
+      width: '175px',
+    },
     // -webkit-box-shadow: 3px 2px 18px 9px rgba(61,170,231,0.5),
     // -moz-box-shadow: 3px 2px 18px 9px rgba(61,170,231,0.5),
   },
