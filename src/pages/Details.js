@@ -84,7 +84,6 @@ const style = {
 
 function Details() {
   let location = useLocation();
-  // console.log(location);
 
   const index = location?.search?.split('=')[1];
   // get pokemon name from parameter
@@ -92,8 +91,6 @@ function Details() {
 
   const [hovered, setHovered] = useState(false);
   const { pokemon, setPokemon, list, setList } = useContext(pokemonContext);
-  // console.log(list);
-  // console.log(location);
 
   const fetchDetail = () => {
 

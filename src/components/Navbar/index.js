@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import PokemonTag from '../../assets/pokemon-tag.png';
-import ToggleButton from '../ToggleButton'
-import Button from '../Button'
+import ToggleButton from '../ToggleButton';
+import Button from '../Button';
 
 import { theme } from '../../helper/theme';
 
@@ -13,7 +13,7 @@ const container = {
     alignItems: 'center',
     padding: '10px 20px',
     backgroundColor: theme.color.darkBlue,
-  }
+  },
 };
 const styledImg = {
   logo: {
@@ -22,8 +22,8 @@ const styledImg = {
   },
   icon: {
     width: '35px',
-    objectFit: 'contain'
-  }
+    objectFit: 'contain',
+  },
 };
 const styledText = {
   navbar: {
@@ -35,10 +35,19 @@ const styledText = {
 };
 
 function Navbar() {
+  const location = useLocation();
+  const pathname = location.pathname.split('/').at(-1);
   return (
     <nav css={container.navbar}>
       <img src={PokemonTag} alt="pokeball" css={styledImg.logo} />
-      <Button link={true} title="My Pokemon"/>
+      {pathname !== 'catch' && (
+        <Button
+          link={true}
+          title={
+            location.pathname === '/my-pokemon-list' ? 'Home' : 'My Pokemon'
+          }
+        />
+      )}
     </nav>
   );
 }

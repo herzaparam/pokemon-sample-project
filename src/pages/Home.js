@@ -63,9 +63,8 @@ const styleText = {
 };
 
 function Home() {
-  const { pokemon, setPokemon, list, setList } = useContext(pokemonContext);
-  console.log(list);
-  // console.log(pokemon);
+  const { pokemon, setPokemon, list, setList, myList } =
+    useContext(pokemonContext);
 
   const fetchList = () => {
     const gqlQuery = `query pokemons($limit: Int, $offset: Int) {
@@ -106,7 +105,11 @@ function Home() {
 
   useEffect(() => {
     if (list.length === 0) {
-      fetchList();
+      if (localStorage.getItem('list') !== null) {
+        const newList = JSON.parse(localStorage.getItem('list'));
+        return setList(newList);
+      }
+      return fetchList();
     }
   }, []);
 

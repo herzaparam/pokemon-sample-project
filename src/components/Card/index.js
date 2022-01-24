@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { theme } from '../../helper/theme';
 import PropTypes from 'prop-types';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { pokemonContext } from '../../helper/context';
 
 const style = {
@@ -56,6 +56,9 @@ const style = {
 
 function Card({ img, name, id, onClick, owned }) {
   const { pokemon, setPokemon } = useContext(pokemonContext);
+  // const location = useLocation();
+  // const pathname = location.split('/').at(-1);
+  // console.log(pathname);
   // console.log(pokemon);
   return (
     <div css={style.cont} onClick={() => setPokemon({ name, image: img })}>

@@ -6,6 +6,8 @@ import SuccessIcon from '../assets/success icon.svg';
 import { Link, useLocation } from 'react-router-dom';
 import iconLeft from '../assets/icon-left.svg';
 import { pokemonContext } from '../helper/context';
+import Button from '../components/Button';
+import { useNavigate } from 'react-router-dom';
 
 const animation = keyframes({
   'from, 0%, to': {
@@ -58,8 +60,6 @@ const style = {
     },
   },
   topContainer: {
-    width: '240px',
-    minHeight: '240px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -72,8 +72,9 @@ const style = {
     textAlign: 'center',
   },
   icon: {
-    width: '100%',
-    height: '100%',
+    width: '240px',
+    height: '240px',
+    margin: 'auto',
   },
   backButton: {
     padding: '7px 10px 0',
@@ -85,26 +86,65 @@ const style = {
       boxShadow: '0px 0px 5px 5px rgba(161,170,178,0.5)',
     },
   },
+  groupInput: {
+    display: 'flex',
+  },
 };
 
 function CatchPage() {
   const location = useLocation();
   const index = location?.search?.split('=')[1];
 
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const { pokemon, setPokemon, list, setList } = useContext(pokemonContext);
-  console.log(list[`${index}`].owned);
+  const [success, setSuccess] = useState(true);
+  const [error, setError] = useState({ err: true, msg: '' });
+  const [nickName, setNickName] = useState('');
+  const { list, setList, myList, setMyList } = useContext(pokemonContext);
+
+  const validate = (text) => {
+    if (!/^[a-zA-Z0-9]+$/.test(text)) {
+      return setError({
+        err: true,
+        msg: "Only accept letter and number input (can't be empty)",
+      });
+    }
+    return setError({ err: false, msg: '' });
+  };
+
+  const handleChange = (e) => {
+    setNickName(e.target.value);
+    validate(e.target.value);
+  };
+
+  const handleClick = () => {
+    if (error.err === false) {
+      const newObj = {
+        ...list[`${index}`],
+        nickname: nickName.trim(),
+        id: myList.length,
+        pokeId: list[`${index}`].id,
+      };
+      delete newObj.owned;
+      setMyList([...myList, newObj]);
+      setNickName('');
+      navigate('/');
+      const stringMyList = JSON.stringify([...myList, newObj]);
+      const stringList = JSON.stringify(list);
+      localStorage.setItem('myList', stringMyList);
+      localStorage.setItem('list', stringList);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
       let catchPokemon;
       if (Math.random() >= 0.5) {
-        
-        // setList([...list, {}]);
         list[`${index}`].owned = ++list[`${index}`].owned;
-        console.log(list);
+        // const newList = list[`${index}`]
+        // setMyList([...myList, { ...list[`${index}`], id: myList.length }]);
         catchPokemon = true;
       } else {
         catchPokemon = false;
@@ -134,6 +174,26 @@ function CatchPage() {
               <p css={[style.paragraph, { color: '#25ae88' }]}>
                 Gotta catch em' all!
               </p>
+              <p css={{ letterSpacing: '1px', textAlign: 'center' }}>
+                Now you can give nickname to your pokemon
+              </p>
+              <div css={style.groupInput}>
+                <input
+                  type="text"
+                  css={{ width: '200px' }}
+                  onChange={(e) => handleChange(e)}
+                  value={nickName}
+                />
+                <Button
+                  title="Submit"
+                  link={false}
+                  onClick={() => {
+                    handleClick();
+                  }}
+                  disabled={error.err}
+                />
+              </div>
+              <p css={{ color: '#e63946' }}>{error.msg}</p>
             </>
           ) : (
             <>
@@ -142,13 +202,13 @@ function CatchPage() {
               <p css={[style.paragraph, { color: '#e63946' }]}>
                 it ran away ...
               </p>
+              <button css={style.backButton}>
+                <Link to="/">
+                  <img src={iconLeft} alt="" height={40} />
+                </Link>
+              </button>
             </>
           )}
-          <button css={style.backButton}>
-            <Link to="/">
-              <img src={iconLeft} alt="" height={40} />
-            </Link>
-          </button>
         </div>
       )}
     </div>

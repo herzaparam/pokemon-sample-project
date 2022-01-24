@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import PokeBall from '../../assets/pokeball-1.png';
 import PropTypes from 'prop-types';
 
@@ -41,16 +41,36 @@ const styledBtn = {
   },
 };
 
-function Button({ title, onClick, link }) {
+function Button({ title, onClick, link, disabled }) {
+  const location = useLocation();
   return link ? (
     <button css={styledBtn.btn} onClick={onClick}>
       <img src={PokeBall} alt="pokeball icon" css={styledImg.icon} />
-      <Link to="/my-pokemon-list" css={styledBtn.linkBtn}>
+      <Link
+        to={location.pathname === '/my-pokemon-list' ? '/' : '/my-pokemon-list'}
+        css={styledBtn.linkBtn}
+      >
         {title}
       </Link>
     </button>
   ) : (
-    <button css={[styledBtn.btn, styledBtn.linkBtn, {margin: '0 20px'}]} onClick={onClick}>
+    <button
+      css={[
+        styledBtn.btn,
+        styledBtn.linkBtn,
+        {
+          margin: '0 20px',
+          // [disabled && 'backgroundColor']: '#a1aab2',
+          // [disabled && 'color']: 'black',
+          // [disabled && '&:hover']: {
+          //   backgroundColor: '#a1aab2',
+          //   color: 'black',
+          // },
+        },
+      ]}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {title}
     </button>
   );
@@ -58,6 +78,7 @@ function Button({ title, onClick, link }) {
 
 Button.propTypes = {
   link: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   title: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };

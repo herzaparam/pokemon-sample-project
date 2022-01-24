@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Details from './pages/Details';
@@ -11,11 +11,15 @@ import { pokemonContext } from './helper/context';
 
 function App() {
   const [list, setList] = useState([]);
+  const [myList, setMyList] = useState([]);
   const [pokemon, setPokemon] = useState({});
   // const [owned, setOwned] = useState([]);
 
+
   return (
-    <pokemonContext.Provider value={{ pokemon, setPokemon, list, setList }}>
+    <pokemonContext.Provider
+      value={{ pokemon, setPokemon, list, setList, myList, setMyList }}
+    >
       <BrowserRouter>
         <Navbar />
         <Routes>
