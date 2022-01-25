@@ -19,7 +19,7 @@
       }
     ]
   ],
-  "plugins": ["transform-class-properties", "react-refresh/babel"],
+  "plugins": ["transform-class-properties"],
   "env": {
     "test": {
       "plugins": ["transform-es2015-modules-commonjs"]
