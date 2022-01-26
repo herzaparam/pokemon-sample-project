@@ -20,6 +20,10 @@ const style = {
     justifyContent: 'center',
     alignContent: 'center',
     flexDirection: 'column',
+    padding: '2em 0',
+    '@media(min-width: 1024px)': {
+      width: '40%',
+    },
     '@media(min-width: 1440px)': {
       width: '35%',
     },
@@ -36,7 +40,10 @@ const style = {
   moveType: {
     display: 'flex',
     flexWrap: 'wrap',
-    padding: '1em 1.3em',
+    padding: '2em 1.3em',
+    '@media(min-width: 1024px)': {
+      width: '60%',
+    },
     '@media(min-width: 1440px)': {
       width: '75%',
     },
@@ -234,7 +241,12 @@ function Details() {
         <h2
           css={[
             style.title,
-            { fontSize: '2rem', textAlign: 'left', margin: '.5em 0 0 1em' },
+            {
+              fontSize: '2rem',
+              textAlign: 'left',
+              margin: '.5em 0 0 1em',
+              alignSelf: 'center',
+            },
           ]}
         >
           Moves

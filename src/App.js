@@ -15,7 +15,6 @@ function App() {
   const [pokemon, setPokemon] = useState({});
   // const [owned, setOwned] = useState([]);
 
-
   return (
     <pokemonContext.Provider
       value={{ pokemon, setPokemon, list, setList, myList, setMyList }}
